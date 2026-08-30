@@ -267,14 +267,17 @@ m_spin_prefactor = electron_g_factor * hbar / electron_mass
 
 class SDCT_asym(MultitermCalculator):
 
-    def __init__(self, fermi_sea=True, fermi_surf=True, **kwargs):
+    def __init__(self, fermi_sea=True, fermi_surf=True,
+                 M1_terms=True, E2_terms=True, V_terms=True, spin=False,
+                 **kwargs):
         super().__init__(**kwargs)
+        params_terms = dict(M1_terms=M1_terms, E2_terms=E2_terms, V_terms=V_terms, spin=spin)
         # Fermi sea terms
         if fermi_sea:
-            self.terms.extend([SDCT_asym_sea_I(**kwargs), SDCT_asym_sea_II(**kwargs)])
+            self.terms.extend([SDCT_asym_sea_I(**params_terms, **kwargs), SDCT_asym_sea_II(**params_terms, **kwargs)])
         # Fermi surface terms
         if fermi_surf:
-            self.terms.extend([SDCT_asym_surf_I(**kwargs), SDCT_asym_surf_II(**kwargs)])
+            self.terms.extend([SDCT_asym_surf_I(**params_terms, **kwargs), SDCT_asym_surf_II(**params_terms, **kwargs)])
 
 
 class Formula_SDCT_asym_sea_I(Formula):
